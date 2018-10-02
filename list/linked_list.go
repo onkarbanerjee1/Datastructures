@@ -2,6 +2,7 @@ package main
 
 import (
 	"fmt"
+	"io"
 	"strings"
 )
 
@@ -458,3 +459,66 @@ func intersectionPointOfTwoLists(node1, node2 *Node) *Node {
 	}
 	return curr1
 }
+
+// Problem no. 24 - https://www.geeksforgeeks.org/segregate-even-and-odd-elements-in-a-linked-list/
+func segregateEvenAndOdd(head *Node) *Node {
+	if head == nil || head.next == nil {
+		return head
+	}
+
+	var evenHead, evenCurr, oddHead, oddCurr, next *Node
+	for curr := head; curr != nil; curr = next {
+		next = curr.next
+		if curr.val%2 == 0 {
+			if evenHead == nil {
+				evenHead = curr
+			} else {
+				evenCurr.next = curr
+			}
+			evenCurr = curr
+		} else {
+			if oddHead == nil {
+				oddHead = curr
+			} else {
+				oddCurr.next = curr
+			}
+			oddCurr = curr
+		}
+	}
+
+	if evenCurr == nil {
+		evenHead = oddHead
+	} else {
+		evenCurr.next = oddHead
+	}
+	if oddCurr != nil {
+		oddCurr.next = nil
+	}
+	return evenHead
+}
+
+// Problem no. 26 - https://www.geeksforgeeks.org/print-reverse-of-a-linked-list-without-actually-reversing/
+func printInReverse(head *Node, w io.Writer) {
+	if head == nil {
+		return
+	}
+	if head.next == nil {
+		fmt.Fprint(w, head)
+	}
+	printInReverse(head.next, w)
+}
+
+// // Problem no. 28 - https://www.geeksforgeeks.org/merge-two-sorted-linked-lists-such-that-merged-list-is-in-reverse-order/
+// func mergeListInReverse(head1, head2 *Node) *Node {
+// 	var last, next1, next2 *Node
+
+// 	for curr1, curr2 := head1, head2; curr1 != nil || curr2 != nil; {
+// 		if curr1 != nil&curr2 != nil {
+// 			if curr1.val < curr2.val {
+// 				next1 = curr1.next
+
+// 			}
+
+// 		}
+// 	}
+// }

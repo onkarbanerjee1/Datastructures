@@ -1,6 +1,10 @@
 package main
 
-import "testing"
+import (
+	"bytes"
+	"reflect"
+	"testing"
+)
 
 func TestRemoveFromSorted(t *testing.T) {
 	testCases := []struct {
@@ -134,6 +138,47 @@ func TestIntersectionOfTwoLists(t *testing.T) {
 		thirdList := &LinkedList{head: intersectionOfTwoSortedLists(origList1.head, origList2.head)}
 		if !thirdList.equals(expList) {
 			t.Fatal("Two lists differ\n", thirdList, "\n", expList)
+		}
+	}
+}
+
+// Problem no. 24 - https://www.geeksforgeeks.org/segregate-even-and-odd-elements-in-a-linked-list/
+func TestSegregateEvenAndOdd(t *testing.T) {
+	testCases := []struct {
+		origVals []int
+		expVals  []int
+	}{
+		{[]int{17, 15, 8, 12, 10, 5, 4, 1, 7, 6}, []int{8, 12, 10, 4, 6, 17, 15, 5, 1, 7}},
+		{[]int{8, 12, 10}, []int{8, 12, 10}},
+		{[]int{1, 3, 5}, []int{1, 3, 5}},
+		{[]int{1}, []int{1}},
+		{[]int{}, []int{}},
+	}
+
+	for _, tc := range testCases {
+		origList, expList := createList(tc.origVals), createList(tc.expVals)
+		origList.head = segregateEvenAndOdd(origList.head)
+		if !origList.equals(expList) {
+			t.Fatal("Two lists differ\n", origList, "\n", expList)
+		}
+	}
+}
+
+// Problem no. 25 - https://www.geeksforgeeks.org/print-reverse-of-a-linked-list-without-actually-reversing/
+func TestPrintInReverse(t *testing.T) {
+	testCases := []struct {
+		origVals []int
+		exp      []byte
+	}{
+		{[]int{1, 2, 3, 4}, []byte{4, 3, 2, 1}},
+	}
+
+	buf := &bytes.Buffer{}
+	for _, tc := range testCases {
+		origList := createList(tc.origVals)
+		printInReverse(origList.head, buf)
+		if reflect.DeepEqual(buf.Bytes(), tc.exp) {
+			t.Fatal("Two lists differ\n", buf.String(), "\n", tc.exp)
 		}
 	}
 }
